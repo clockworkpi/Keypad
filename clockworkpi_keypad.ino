@@ -1,8 +1,20 @@
-// CLOCKWORK Keypad Arduino driver
-// For more information please visit https://forum.clockworkpi.com
-// HAPPY HACKING
+////////////////////////////////////////////////////////////////////////////////
+//                       CHANGELOG
+// - 17/05/2018 
+//    * clockworkpi_keypad.ino uploaded to https://github.com/clockworkpi/Keypad.
+//    * CLOCKWORK Keypad Arduino driver
+//    * For more information please visit https://forum.clockworkpi.com
+//    * HAPPY HACKING
+//
+// - 01/08/2017 (Petar Petrov @Petrakis)
+//    * Changelog created.
+//    * Added a debug flag to turn on/off keypress serial printing.
+//      Intended for checking if the Keypad Board is working.
+/////////////////////////////////////////////////////////////////////////////////
 
 #include "UsbKeyboard.h"
+
+#define DEBUG 0  // 0 = Debugging mode disabled / 1 = Debbuging mode enabled
 
 #define KEY_ENTER           0x28    // Keyboard Return (ENTER)
 #define KEY_ESCAPE          0x29    // Keyboard Escape
@@ -101,6 +113,11 @@ void setup()
     old_keys[i] = KEY_NULL;
   }
   Serial.begin(115200);
+
+  #if DEBUG == true
+    delay( 500 ); // Give a little bit time to initialize or it prints garbage the first time
+    Serial.println(F("\nBoard Initialized! Listening for Key Press."));
+  #endif
 }
 
 void loop()
@@ -147,6 +164,9 @@ void loop()
           UsbKeyboard.release(old_keys[i]);
         }
         UsbKeyboard.press(key);
+        #if DEBUG == true
+          Serial.println("Key " + String(key, DEC) + " was pressed.");
+        #endif
         old_keys[i] = key;
       }
     }
