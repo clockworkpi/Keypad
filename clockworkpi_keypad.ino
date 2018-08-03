@@ -1,16 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////
-//                       CHANGELOG
-// - 17/05/2018 
-//    * clockworkpi_keypad.ino uploaded to https://github.com/clockworkpi/Keypad.
-//    * CLOCKWORK Keypad Arduino driver
-//    * For more information please visit https://forum.clockworkpi.com
-//    * HAPPY HACKING
-//
-// - 01/08/2017 (Petar Petrov @Petrakis)
-//    * Changelog created.
-//    * Added a debug flag to turn on/off keypress serial printing.
-//      Intended for checking if the Keypad Board is working.
-/////////////////////////////////////////////////////////////////////////////////
+// CLOCKWORK Keypad Arduino driver
+// For more information please visit https://forum.clockworkpi.com
+// HAPPY HACKING!
 
 #include "UsbKeyboard.h"
 
