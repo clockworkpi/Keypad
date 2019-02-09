@@ -10,6 +10,7 @@
 #define KEY_SPACE           0x2C    // Keyboard Space
 #define KEY_DASH            0x2D    // Keyboard - and _
 #define KEY_EQUAL           0x2E    // Keyboard = and +
+#define KEY_INSERT          0x49    // Keyboard Insert
 #define KEY_HOME            0x4A    // Keyboard Home
 #define KEY_PAGE_UP         0x4B    // Keyboard Page Up
 #define KEY_END             0x4D    // Keyboard End
@@ -25,9 +26,9 @@
 #define KEY_ON            0
 #define ADC_BOUNDARY      500
 #define DIGITAL_KEY_NUM   9
-#define ANALOG_KEY_NUM    6
+#define ANALOG_KEY_NUM    7
 #define KEY_NUM           (DIGITAL_KEY_NUM + ANALOG_KEY_NUM)
-#define SHIFT_KEY_NUM     2
+#define SHIFT_KEY_NUM     1
 #define KEY_NULL          0xff
 
 #define KEYPAD_UP     KEY_UP_ARROW
@@ -43,6 +44,7 @@
 #define KEYPAD_START  KEY_ENTER
 #define KEYPAD_LIGHT1 KEY_L
 #define KEYPAD_LIGHT2 KEY_O
+#define KEYPAD_LIGHT3 KEY_P
 #define KEYPAD_LIGHT4 KEY_Y
 #define KEYPAD_LIGHT5 KEY_H
 
@@ -59,21 +61,22 @@
 #define KEYPAD_START_SHIFT  KEY_NUM_PLUS
 #define KEYPAD_LIGHT1_SHIFT KEY_END
 #define KEYPAD_LIGHT2_SHIFT KEY_PAGE_DOWN
+#define KEYPAD_LIGHT3_SHIFT KEY_INSERT
 #define KEYPAD_LIGHT4_SHIFT KEY_PAGE_UP
 #define KEYPAD_LIGHT5_SHIFT KEY_HOME
 
-const int pins[KEY_NUM] = {3, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 6, 7};
-const int shift_pins[SHIFT_KEY_NUM] = {1, 5};
+const int pins[KEY_NUM] = {3, 6, 7, 8, 9, 10, 11, 12, 13, 0, 2, 3, 4, 5, 6, 7};
+const int shift_pins[SHIFT_KEY_NUM] = {1};
 
 const int keys[KEY_NUM] = 
 {
   KEYPAD_UP, KEYPAD_LEFT, KEYPAD_DOWN, KEYPAD_RIGHT, KEYPAD_Y, KEYPAD_X, KEYPAD_A, KEYPAD_B, KEYPAD_START, 
-  KEYPAD_MENU, KEYPAD_SELECT, KEYPAD_LIGHT1, KEYPAD_LIGHT2, KEYPAD_LIGHT4, KEYPAD_LIGHT5
+  KEYPAD_MENU, KEYPAD_SELECT, KEYPAD_LIGHT1, KEYPAD_LIGHT2, KEYPAD_LIGHT3, KEYPAD_LIGHT4, KEYPAD_LIGHT5
 };
 const int shift_keys[KEY_NUM] = 
 {
   KEYPAD_UP_SHIFT, KEYPAD_LEFT_SHIFT, KEYPAD_DOWN_SHIFT, KEYPAD_RIGHT_SHIFT, KEYPAD_Y_SHIFT, KEYPAD_X_SHIFT, KEYPAD_A_SHIFT, KEYPAD_B_SHIFT, KEYPAD_START_SHIFT, 
-  KEYPAD_MENU_SHIFT, KEYPAD_SELECT_SHIFT, KEYPAD_LIGHT1_SHIFT, KEYPAD_LIGHT2_SHIFT, KEYPAD_LIGHT4_SHIFT, KEYPAD_LIGHT5_SHIFT
+  KEYPAD_MENU_SHIFT, KEYPAD_SELECT_SHIFT, KEYPAD_LIGHT1_SHIFT, KEYPAD_LIGHT2_SHIFT, KEYPAD_LIGHT3_SHIFT, KEYPAD_LIGHT4_SHIFT, KEYPAD_LIGHT5_SHIFT
 };
 
 int old_keys[KEY_NUM];
@@ -108,7 +111,7 @@ void loop()
   int on_off, key;
 
   UsbKeyboard.update();
-  delay(1000);
+  delay(1000); // TODO: refactor to only update when a key changed? 
 
   for(int i = 0; i < KEY_NUM; i++)
   {
