@@ -9,9 +9,12 @@
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
 #include <string.h>
+#include <util/delay.h>     // for _delay_ms()
 
-#include "usbdrv.h"
-
+extern "C"
+{
+  #include "usbdrv.h"
+};
 // TODO: Work around Arduino 12 issues better.
 //#include <WConstants.h>
 //#undef int()
@@ -141,7 +144,6 @@ class UsbKeyboardDevice {
     _delay_ms(250);
     usbDeviceConnect();
 
-
     usbInit();
       
     sei();
@@ -241,11 +243,8 @@ size_t release(uint8_t k)
 
 UsbKeyboardDevice UsbKeyboard = UsbKeyboardDevice();
 
-#ifdef __cplusplus
-extern "C"{
-#endif 
-  // USB_PUBLIC uchar usbFunctionSetup
-uchar usbFunctionSetup(uchar data[8]) 
+  // USB_PUBLIC usbMsgLen_t usbFunctionSetup(uchar data[8])
+usbMsgLen_t usbFunctionSetup(uchar data[8]) 
   {
     usbRequest_t    *rq = (usbRequest_t *)((void *)data);
 
@@ -272,9 +271,5 @@ uchar usbFunctionSetup(uchar data[8])
     }
     return 0;
   }
-#ifdef __cplusplus
-} // extern "C"
-#endif
-
 
 #endif // __UsbKeyboard_h__
