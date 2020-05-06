@@ -1,0 +1,14 @@
+17/05/2018 
+    clockworkpi_keypad.ino uploaded to https://github.com/clockworkpi/Keypad.
+    CLOCKWORK Keypad Arduino driver
+
+01/08/2018
+    Changelog created.
+    Added a debug flag to turn on/off keypress serial printing.
+    Intended for checking if the Keypad Board is working.
+
+14/04/2020
+    Added a INVERT_AB flag to invert XYAB to ABXY easily.
+    Updated obdev v-usb lib to the latest eg. USBDRV_VERSION  20090822 to 20121206.
+    Ported UsbKeyboard to the latest v-usb.
+    Fixed the incorect not on the timer (from ! to bitwise ~)

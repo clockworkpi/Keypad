@@ -1,8 +1,11 @@
 // CLOCKWORK Keypad Arduino driver
 // For more information please visit https://forum.clockworkpi.com
-// HAPPY HACKING
+// HAPPY HACKING!
 
 #include "UsbKeyboard.h"
+
+#define DEBUG 0  // 0 = Debugging mode disabled / 1 = Debbuging mode enabled
+#define INVERT_AB 0 // 0 = XY/AB / 1 = AB/XY
 
 #define KEY_ENTER           0x28    // Keyboard Return (ENTER)
 #define KEY_ESCAPE          0x29    // Keyboard Escape
@@ -34,10 +37,19 @@
 #define KEYPAD_LEFT   KEY_LEFT_ARROW
 #define KEYPAD_DOWN   KEY_DOWN_ARROW
 #define KEYPAD_RIGHT  KEY_RIGHT_ARROW
-#define KEYPAD_Y      KEY_I
-#define KEYPAD_X      KEY_U
-#define KEYPAD_A      KEY_J
-#define KEYPAD_B      KEY_K
+
+#if INVERT_AB == true
+  #define KEYPAD_Y      KEY_K
+  #define KEYPAD_X      KEY_J
+  #define KEYPAD_A      KEY_U
+  #define KEYPAD_B      KEY_I
+#else
+  #define KEYPAD_Y      KEY_I
+  #define KEYPAD_X      KEY_U
+  #define KEYPAD_A      KEY_J
+  #define KEYPAD_B      KEY_K
+#endif
+
 #define KEYPAD_MENU   KEY_ESCAPE
 #define KEYPAD_SELECT KEY_SPACE
 #define KEYPAD_START  KEY_ENTER
@@ -90,7 +102,7 @@ bool shift_key_pressed()
 
 void setup()
 {
-  TIMSK0 &= !(1 << TOIE0);
+  TIMSK0 &= ~(1 << TOIE0);
 
   for(int i = 0; i < KEY_NUM; i++)
   {
@@ -101,6 +113,11 @@ void setup()
     old_keys[i] = KEY_NULL;
   }
   Serial.begin(115200);
+
+  #if DEBUG == true
+    delay( 500 ); // Give a little bit time to initialize or it prints garbage the first time
+    Serial.println(F("\nBoard Initialized! Listening for Key Press."));
+  #endif
 }
 
 void loop()
@@ -108,7 +125,7 @@ void loop()
   int on_off, key;
 
   UsbKeyboard.update();
-  delay(1000);
+  // delay(100); 
 
   for(int i = 0; i < KEY_NUM; i++)
   {
@@ -147,6 +164,9 @@ void loop()
           UsbKeyboard.release(old_keys[i]);
         }
         UsbKeyboard.press(key);
+        #if DEBUG == true
+          Serial.println("Key " + String(key, DEC) + " was pressed.");
+        #endif
         old_keys[i] = key;
       }
     }
